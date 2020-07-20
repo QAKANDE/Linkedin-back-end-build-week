@@ -7,14 +7,21 @@ const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const server = express();
+const {badRequestHandler,notFoundHandler,genericErrorHandler} = require('./errorHandlers')
 
 //server.use(express.static(join(__dirname, `../public`)))
 const port = process.env.PORT;
 server.use(cors());
 server.use(express.json());
+server.use(express.static(join(__dirname, `../public`)));
 server.use("/profile", profileRouter);
 server.use("/post", postRouter);
 server.use("/experience", experienceRouter);
+
+server.use(badRequestHandler);
+server.use(notFoundHandler);
+server.use(genericErrorHandler);
+
 console.log(listEndpoints(server));
 
 mongoose

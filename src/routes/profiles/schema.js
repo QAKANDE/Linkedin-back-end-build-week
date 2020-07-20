@@ -16,7 +16,8 @@ const profileSchema = new Schema(
           console.log(user);
           if (user.length > 0) {
             let error = new Error();
-            error.message = "THIS EMAIL ALREADY EXISTS";
+            error.message = `'${email}' is already in use`;
+            error.httpStatusCode=404
             throw error;
           }else return true
         },
@@ -35,8 +36,9 @@ const profileSchema = new Schema(
           const user = await profileModel.find({ username: username });
           if (user.length > 0) {
             let error = new Error();
-            error.message = "THIS  USERNAME already EXISTS";
-            throw error;
+            error.message = `'${username}' is already in use`;
+            error.httpStatusCode=404
+            throw error
           }else return true
         },
         message: "User already exists!",
