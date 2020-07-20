@@ -1,7 +1,7 @@
 const express = require("express");
 const listEndpoints = require("express-list-endpoints");
 const profileRouter = require('./routes/profiles')
-const experienceRouter = require('./routes/experiences/index')
+const experienceRouter = require('./routes/experiences')
 const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
