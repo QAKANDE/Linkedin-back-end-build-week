@@ -10,7 +10,6 @@ const server = express();
 
 //server.use(express.static(join(__dirname, `../public`)))
 const port = process.env.PORT;
-
 server.use(cors());
 server.use(express.json());
 server.use('/profile',profileRouter)
