@@ -16,7 +16,8 @@ router.post("/", async (req, res, next) => {
       const newProduct = new profileModel(req.body);
       const response = await newProduct.save();
       res.send(response);
-    } catch (error) {}
-  });
-
+    } catch (error) {
+      console.log(error)
+    }
+});
 module.exports=router
