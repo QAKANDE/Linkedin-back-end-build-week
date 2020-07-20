@@ -19,33 +19,3 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  try {
-    const newProfile = new profileModel(req.body);
-    const response = await newProfile.save();
-    res.send(response);
-  }catch (error) {
-    console.log(error)
-}
-});
-
-router.put("/:id", async (req, res, next) => {
-  try {
-    const editprofile = await profileModel.findByIdAndUpdate(req.params.id,req.body);
-    const edited = await profileModel.findById(req.params.id);
-    res.send(edited);
-  } catch (error) {
-      console.log(error)
-  }
-});
-
-router.delete("/:id", async (req, res, next) => {
-  try {
-    const deleted = await profileModel.findByIdAndDelete(req.params.id);
-    res.send(deleted);
-  }catch (error) {
-    console.log(error)
-}
-});
-
-module.exports = router;
