@@ -19,4 +19,5 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-module.exports = profileModel
+
+module.exports = router

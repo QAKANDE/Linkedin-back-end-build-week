@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const experienceModel = require("./schema");
 
-router.get('/username', async(req,res)=>{
+router.get('/:username', async(req,res)=>{
 try { 
     const response = await experienceModel.find()
     res.send(response)
@@ -11,7 +11,7 @@ try {
 }
 
 })
-router.get('/username/:id', async(req,res)=>{
+router.get('/:username/:id', async(req,res)=>{
     try { 
         const response = await experienceModel.findById(req.params.id)
         res.send(response)
@@ -19,7 +19,7 @@ router.get('/username/:id', async(req,res)=>{
        console.log(error) 
     } 
 })
-router.post('/username', async(req,res)=>{
+router.post('/:username', async(req,res)=>{
     try {
         const experienceBody = {...req.body , username:req.params.username}
         const newExperience = new experienceModel(experienceBody);
@@ -46,4 +46,4 @@ router.delete('/username/:id', async(req,res)=>{
     } 
 })
 
-module.exports = experienceModel
+module.exports = router
