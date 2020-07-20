@@ -10,8 +10,13 @@ router.get('/',async (req,res,next) =>{
     } catch (error) {
         console.log(error)
     }
-    
-
 })
+router.post("/", async (req, res, next) => {
+    try {
+      const newProduct = new profileModel(req.body);
+      const response = await newProduct.save();
+      res.send(response);
+    } catch (error) {}
+  });
 
 module.exports=router
