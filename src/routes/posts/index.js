@@ -21,6 +21,7 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 router.post("/", async (req, res, next) => {
   try {
     const newPost = new postModel(req.body);
@@ -30,6 +31,7 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
 router.put("/:id", async (req, res, next) => {
   try {
     const editPost = await postModel.findByIdAndUpdate(req.params.id, req.body);
@@ -39,6 +41,7 @@ router.put("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 router.delete("/:id", async (req, res, next) => {
   try {
     await postModel.findByIdAndDelete(req.params.id);

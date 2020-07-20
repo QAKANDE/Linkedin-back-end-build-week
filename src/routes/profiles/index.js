@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
     const response = await newProfile.save();
     res.send(response);
   } catch (error) {
-    console.log(error);
+    res.send(error.message);
   }
 });
 
