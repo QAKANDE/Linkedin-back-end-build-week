@@ -9,8 +9,8 @@ const experiencesSchema = new Schema({
         endDate: {type:Date}, //could be null
         description: {type:String, required:true},
         area: {type:String, required:true},
-        username: {type: Schema.Types.String,ref:"profiles", required:true},// this should be an profile ID
-        image: {type:String, required:true}, //server generated on upload, set a default here
+        username: {type: Schema.Types.String,ref:"profiles", required:true},
+        image: {type:String, required:true},
     
 },{timestamps:true});
 
