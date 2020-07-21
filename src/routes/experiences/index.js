@@ -51,18 +51,6 @@ router.delete('/username/:id', async(req,res)=>{
     } 
 })
 
-// router.get('/:username/csv', async(req,res)=>{ 
-//     try { 
-//         const response = await experienceModel.find()
-//         const json2csv = new Transform({
-//             fields: ["_id", "role", "company", "startDate", "endDate","description","area","username",
-//         "createdAt","updatedAt","image"],
-//         })
-//       res.sendHe
-//     } catch (error) {
-//        console.log(error) 
-//     }
-//     })
 router.post("/image/:id",upload.single('experience') ,async(req,res,next)=>{
         try {
           const imgDir = join(__dirname,`../../../public/experiences/${req.params.id + req.file.originalname }`)

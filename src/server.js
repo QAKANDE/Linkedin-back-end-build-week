@@ -3,19 +3,21 @@ const listEndpoints = require("express-list-endpoints");
 const profileRouter = require('./routes/profiles')
 const experienceRouter = require('./routes/experiences')
 const fileRoutes = require('./routes/files')
+const post = require("./routes/posts")
 const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const server = express();
 
 
-//server.use(express.static(join(__dirname, `../public`)))
+server.use(express.static(join(__dirname, `../public`)))
 const port = process.env.PORT;
 
 server.use(cors());
 server.use(express.json());
 server.use('/profile',profileRouter)
 server.use('/profile/experience' , experienceRouter)
+server.use('/post',post)
 server.use('/file' , fileRoutes)
 console.log(listEndpoints(server))
 
