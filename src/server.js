@@ -2,6 +2,7 @@ const express = require("express");
 const listEndpoints = require("express-list-endpoints");
 const profileRouter = require("./routes/profiles");
 const postRouter = require("./routes/posts");
+const experienceRouter = require('./routes/experiences')
 const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -15,6 +16,8 @@ server.use(express.json());
 server.use("/profile", profileRouter);
 server.use("/post", postRouter);
 console.log(listEndpoints(server));
+server.use('/experience' , experienceRouter)
+console.log(listEndpoints(server))
 
 mongoose
   .connect(
