@@ -1,17 +1,20 @@
 const { model, Schema } = require("mongoose");
 const profileModel = require('../profiles/schema')
 
+const usernamee=""
+const id = ""
+
 const postSchema = new Schema(
   {
     text: { type: String },
     username: {
-      type: Schema.Types.String,
-      ref: "profiles",
+      type: String,
       required: true,
       validate: {
         validator: async function (username) {
           const user = await profileModel.find({ username: username });
           if (user.length > 0) {
+            console.log('username:',id)
             return true;
           } else return false;
         },
@@ -20,7 +23,7 @@ const postSchema = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "profile",
+      ref: 'profiles',
       required: true,
       validate: {
         validator: async function (id) {
@@ -30,7 +33,7 @@ const postSchema = new Schema(
           } else return false;
         },
         message: "Username doesn't exist",
-      },
+      }
     },
     images: { type: Array, default: "www.www.www" },
   },

@@ -10,7 +10,7 @@ const { userInfo } = require("os");
 
 router.get("/", async (req, res, next) => {
   try {
-    const posts = await postModel.find().populate('profile');
+    const posts = await postModel.find().populate('user',['name','surname','image']);
     if(posts.length)
     res.send(posts);
     else {
@@ -25,8 +25,8 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const post = await postModel.findById(req.params.id);
-    if(user.length){
+    const post = await postModel.findById(req.params.id).populate('user',['name','surname','image']);
+    if(post){
       res.send(post);
     }else{
       const error = new Error()
@@ -34,6 +34,7 @@ router.get("/:id", async (req, res, next) => {
       throw error
     }
   } catch (error) {
+    error.httpStatusCode=400;
     next(error);
   }
 });

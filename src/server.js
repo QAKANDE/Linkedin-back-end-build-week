@@ -19,7 +19,7 @@ server.use(express.json());
 server.use('/post',postRouter)
 server.use('/profile',profileRouter)
 server.use('/profile/experience' , experienceRouter)
-//server.use('/file' , fileRoutes)
+server.use('/file' , fileRoutes)
 console.log(listEndpoints(server))
 
 
