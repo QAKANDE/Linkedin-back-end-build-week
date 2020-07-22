@@ -10,16 +10,30 @@ const experienceModel = require("./schema");
 
 router.get('/:username', async(req,res)=>{ 
 try { 
-    const response = await experienceModel.find()
-    res.send(response)
+    const response = await experienceModel.find({username:req.params.username})
+    if(response.length){
+      res.send(response)
+    }else{
+      const error = new Error()
+      error.httpStatusCode=404
+      throw error
+    }
+    
 } catch (error) {
    console.log(error) 
 }
 })
+
 router.get('/:username/:id', async(req,res)=>{
     try { 
         const response = await experienceModel.findById(req.params.id)
-        res.send(response)
+        if(user.length){
+          res.send(response)
+        }else{
+          const error = new Error()
+          error.httpStatusCode=404
+          throw error
+        }
     } catch (error) {
        console.log(error) 
     } 
@@ -51,18 +65,6 @@ router.delete('/username/:id', async(req,res)=>{
     } 
 })
 
-// router.get('/:username/csv', async(req,res)=>{ 
-//     try { 
-//         const response = await experienceModel.find()
-//         const json2csv = new Transform({
-//             fields: ["_id", "role", "company", "startDate", "endDate","description","area","username",
-//         "createdAt","updatedAt","image"],
-//         })
-//       res.sendHe
-//     } catch (error) {
-//        console.log(error) 
-//     }
-//     })
 router.post("/image/:id",upload.single('experience') ,async(req,res,next)=>{
         try {
           const imgDir = join(__dirname,`../../../public/experiences/${req.params.id + req.file.originalname }`)

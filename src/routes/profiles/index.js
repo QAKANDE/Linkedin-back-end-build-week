@@ -6,10 +6,19 @@ const upload = multer()
 const {join} = require('path')
 const {readdir,writeFile} =require('fs-extra');
 
+
 router.get("/", async (req, res, next) => {
   try {
     let user = await profileModel.find();
+    
+    if(user.length)
     res.send(user);
+    else {
+      const error= new Error()
+      error.httpStatusCode=404
+      next(error)
+    }
+
   } catch (error) {
     next(error)
   }
@@ -17,7 +26,14 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     let user = await profileModel.findById(req.params.id);
-    res.send(user);
+    if(user.length){
+      res.send(user);
+    }else{
+      const error = new Error()
+      error.httpStatusCode=404
+      throw error
+    }
+    
   }catch (error) {
     next(error)
   }
@@ -58,7 +74,13 @@ router.put("/:id", async (req, res, next) => {
       req.body
     );
     const edited = await profileModel.findById(req.params.id);
+    if(edited.length)
     res.send(edited);
+    else {
+      const error= new Error()
+      error.httpStatusCode=404
+      next(error)
+    }
   } catch (error) {
     next(error)
   }
@@ -67,7 +89,13 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   try {
     const deleted = await profileModel.findByIdAndDelete(req.params.id);
+    if(deleted.length)
     res.send(deleted);
+    else {
+      const error= new Error()
+      error.httpStatusCode=404
+      next(error)
+    }
   } catch (error) {
     next(error)
   }
