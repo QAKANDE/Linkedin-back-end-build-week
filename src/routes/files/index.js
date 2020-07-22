@@ -11,6 +11,7 @@ const PdfPrinter = require('pdfmake')
 const PDFDocument = require('pdfkit');
 const pdfPath = path.join(__dirname , '../../../public/pdf') 
 const csvPath = path.join(__dirname , '../../../public/csv/ex.csv') 
+const cvPath = path.join(__dirname , '../../../public/csv/cv.json') 
 router.get("/:username", async (req, res, next) => {
     try {
       let profile = await profileModel.find({username:req.params.username})
@@ -78,6 +79,7 @@ router.get("/:username", async (req, res, next) => {
   router.get('/csv/:id' , async (req,res,next)=>{
       try {
           const response = await experienceModel.findById(req.params.id)
+        let cvJSON = readFile()
         //   jsonexport(response, function(err, csv){
         //     if (err) return console.error(err);
         //     console.log(csv);
@@ -86,7 +88,7 @@ router.get("/:username", async (req, res, next) => {
               fields: ["_id", "role", "company", "startDate", "endDate","description","area","image","username",
           "createdAt","updatedAt"]
           })
-          const output = fs.createWriteStream(csvPath)
+          const input = fs.createWriteStream(csvPath)
           pump(response,json2csv,output , (err)=>{
               if(err){
                   console.log(err)
