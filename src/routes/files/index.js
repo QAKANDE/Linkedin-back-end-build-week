@@ -12,69 +12,106 @@ const PDFDocument = require('pdfkit');
 const pdfPath = path.join(__dirname , '../../../public/pdf') 
 const csvPath = path.join(__dirname , '../../../public/csv/ex.csv') 
 const cvPath = path.join(__dirname , '../../../public/csv/cv.json') 
-router.get("/:username", async (req, res, next) => {
-    try {
-      let profile = await profileModel.find({username:req.params.username})
-      let experience = await experienceModel.find({username:req.params.username})
-        var fonts = {
-            Roboto: {
-                normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
-                bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
-                italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
-                bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
-            }
-        };
-        // const both = []
 
-        // profile.map((ele)=>{
-        //     both.push(ele)
-        // })
-        //     experience.map((ele)=>{
-        //                 both.push(ele)
-        //             })
-        // both.map((ele)=> {
-        //     console.log("ELEMENT:",ele)
-        // })
-        profile[0].experiences = []
-        experience.map((ele)=>{
-            profile[0].experiences.push(ele)
-        })
-        experience.map((ele)=>{
-            const ex = {
-                role:[ele.role],
-                company:[ele.company]
-            }
-            console.log(ex)
-        })
-        let printer = new PdfPrinter(fonts)
-            let doc = {
-                pageMargins: [150, 50, 150, 50],
-                content: [
-                    { text: `Welcome ${profile[0].name}`, fontSize: 25, background: 'yellow', italics: true },
-                    "PROFILE DETAILS                                                                    ",
-                    `Name:${profile[0].name} ${profile[0].surname}`,
-                    `Email:${profile[0].email}`,
-                    `Biography:${profile[0].bio}`,
-                    `Title:${profile[0].title}`,
-                    `Area:${profile[0].area}`,
-                    experience.map((ele)=> {
-                    "EXPERIENCE DETAILS",
-                        `ROLE:${ele.role}     COMPANY:${ele.company}`,
-                        `Description:${ele.description}`,
-                        `START DATE:${ele.startDate}    END DATE : ${ele.endDate}`,
-                        `DESCRIPTION:${ele.description}`,
-                        `AREA:${ele.area}` 
-                    })
-                ]
-            }
-            var pdfDoc = printer.createPdfKitDocument(doc);
-             pdfDoc.pipe(fs.createWriteStream(path.join(pdfPath,`${profile[0].name}.pdf`)))
-            pdfDoc.end()
-        res.send("PDF CREATED")
+
+router.get("/pdf/:username", async(req, res, next)=>{
+    try {
+        let combined = []
+           let profile = await profileModel.find({username:req.params.username})
+           let experience = await experienceModel.find({username:req.params.username})
+           combined.push(profile)
+           combined.push(experience)
+        console.log(profile)
+   
+       
+         const doc = new PDFDocument();  
+         doc.pipe(fs.createWriteStream(path.join(pdfPath,`${profile[0].name}.pdf`)))
+        //  doc.pipe(fs.createWriteStream(path.join(__dirname, `../../../public/pdf/${profile.username}.pdf`))) 
+        //  doc.image('public\\images\\experience\\5f160c20969d033aa4615bd8.png', {
+        //     fit: [100, 300],
+        //     align: 'center',
+        //     valign: 'center'
+        //   }); 
+        // var fonts = {
+        //                 Roboto: {
+        //                     normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
+        //                     bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
+        //                     italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
+        //                     bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
+        //                 }
+        //             };
+         doc
+            .text(combined, 250, 200)  
+            .fill('#000');
+            doc.end() 
+            res.status(201).send("Created")
     } catch (error) {
-      next(error)
+        next(error)
     }
-  });
+})
+// router.get("/:username", async (req, res, next) => {
+//     try {
+//       let profile = await profileModel.find({username:req.params.username})
+//       let experience = await experienceModel.find({username:req.params.username})
+//         var fonts = {
+//             Roboto: {
+//                 normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
+//                 bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
+//                 italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
+//                 bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
+//             }
+//         };
+//         // const both = []
+
+//         // profile.map((ele)=>{
+//         //     both.push(ele)
+//         // })
+//         //     experience.map((ele)=>{
+//         //                 both.push(ele)
+//         //             })
+//         // both.map((ele)=> {
+//         //     console.log("ELEMENT:",ele)
+//         // })
+//         profile[0].experiences = []
+//         experience.map((ele)=>{
+//             profile[0].experiences.push(ele)
+//         })
+//         experience.map((ele)=>{
+//             const ex = {
+//                 role:[ele.role],
+//                 company:[ele.company]
+//             }
+//             console.log(ex)
+//         })
+//         let printer = new PdfPrinter(fonts)
+//             let doc = {
+//                 pageMargins: [150, 50, 150, 50],
+//                 content: [
+//                     { text: `Welcome ${profile[0].name}`, fontSize: 25, background: 'yellow', italics: true },
+//                     "PROFILE DETAILS                                                                    ",
+//                     `Name:${profile[0].name} ${profile[0].surname}`,
+//                     `Email:${profile[0].email}`,
+//                     `Biography:${profile[0].bio}`,
+//                     `Title:${profile[0].title}`,
+//                     `Area:${profile[0].area}`,
+//                     experience.map((ele)=> {
+//                     "EXPERIENCE DETAILS",
+//                         `ROLE:${ele.role}     COMPANY:${ele.company}`,
+//                         `Description:${ele.description}`,
+//                         `START DATE:${ele.startDate}    END DATE : ${ele.endDate}`,
+//                         `DESCRIPTION:${ele.description}`,
+//                         `AREA:${ele.area}` 
+//                     })
+//                 ]
+//             }
+//             var pdfDoc = printer.createPdfKitDocument(doc);
+//              pdfDoc.pipe(fs.createWriteStream(path.join(pdfPath,`${profile[0].name}.pdf`)))
+//             pdfDoc.end()
+//         res.send("PDF CREATED")
+//     } catch (error) {
+//       next(error)
+//     }
+//   });
 
   router.get('/csv/:id' , async (req,res,next)=>{
       try {

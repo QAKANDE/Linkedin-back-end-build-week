@@ -19,7 +19,7 @@ server.use(express.json());
 server.use('/post',postRouter)
 server.use('/profile',profileRouter)
 server.use('/profile/experience' , experienceRouter)
-//server.use('/file' , fileRoutes)
+server.use('/file' , fileRoutes)
 console.log(listEndpoints(server))
 
 
@@ -30,7 +30,7 @@ mongoose
   })
   .then(
     server.listen(port, () => {
-      console.log("Running on port", port);
+      console.log("Running on porttttt", port);
     })
   )
   .catch((err) => console.log(err));
