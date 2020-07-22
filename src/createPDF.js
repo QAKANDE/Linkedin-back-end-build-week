@@ -8,14 +8,12 @@ const { SSL_OP_CIPHER_SERVER_PREFERENCE } = require("constants");
 //MAKE SURE THAT USER IS AN OBJECT AND EXPERIENCES IS AN ARRAY
 const createPDF = (user, experiences) => {
   const doc = new PDFDocument();
-
+  const img=user.image.replace(process.env.SERVER_URL+process.env.PORT,"")
+  const imagePath=join(__dirname,`../public/${img}`)
   doc.pipe(fs.createWriteStream(join(__dirname,`../public/pdf/${user.username}.pdf`)));
 
 
-  // doc.image(user.image, 320, 15, {fit: [100, 100]})
-  //  .rect(320, 15, 100, 100)
-  //  .stroke()
-  //  .text('Fit', 320, 0)
+  
 
   doc.font('Times-Roman')
    .text(`${user.name}  ${user.surname}`)
@@ -48,6 +46,8 @@ const createPDF = (user, experiences) => {
     doc.moveDown();
     
   });
+  doc.image(imagePath, 320, 50, {fit: [100, 100]})
+   .stroke()
 
   doc.end();
 

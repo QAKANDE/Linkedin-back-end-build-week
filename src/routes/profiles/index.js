@@ -53,12 +53,11 @@ router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
   
   try {
     
-    const imgDir = join(__dirname,`../../../public/profiles/${req.params.id + req.file.originalname }`)
+    const imgDir = join(__dirname,`../../../public/profileImages/${req.params.id + req.file.originalname }`)
     await writeFile(imgDir,req.file.buffer)
-    const directory = await readdir(join(__dirname,`../../../public/profiles`))
     const editprofile = await profileModel.findByIdAndUpdate(
       req.params.id,
-      {"image": process.env.SERVER_URL + process.env.PORT +'/profiles/' + req.params.id + req.file.originalname}
+      {"image": process.env.SERVER_URL + process.env.PORT +'/profile/' + req.params.id + req.file.originalname}
     )
     res.status(201).send(editprofile)
   } catch (err) {
@@ -74,10 +73,10 @@ router.put("/:id", async (req, res, next) => {
       req.body
     );
     const edited = await profileModel.findById(req.params.id);
-    if(edited.length)
+    if(edited.length>0)
     res.send(edited);
     else {
-      const error= new Error()
+      const error = new Error()
       error.httpStatusCode=404
       next(error)
     }

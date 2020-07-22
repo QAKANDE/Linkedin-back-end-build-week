@@ -11,11 +11,14 @@ const mongoose = require("mongoose");
 const server = express();
 
 
-server.use(express.static(join(__dirname, `../public`)))
+
+const path=join(__dirname,'../public')
 const port = process.env.PORT;
+
 
 server.use(cors());
 server.use(express.json());
+server.use(express.static(path))
 server.use('/post',postRouter)
 server.use('/profile',profileRouter)
 server.use('/profile/experience' , experienceRouter)
