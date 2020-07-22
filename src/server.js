@@ -4,6 +4,7 @@ const profileRouter = require('./routes/profiles')
 const experienceRouter = require('./routes/experiences')
 const postRouter = require('./routes/posts')
 const fileRoutes = require('./routes/files')
+const post = require("./routes/posts")
 const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
