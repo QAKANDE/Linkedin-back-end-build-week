@@ -10,16 +10,30 @@ const experienceModel = require("./schema");
 
 router.get('/:username', async(req,res)=>{ 
 try { 
-    const response = await experienceModel.find()
-    res.send(response)
+    const response = await experienceModel.find({username:req.params.username})
+    if(response.length){
+      res.send(response)
+    }else{
+      const error = new Error()
+      error.httpStatusCode=404
+      throw error
+    }
+    
 } catch (error) {
    console.log(error) 
 }
 })
+
 router.get('/:username/:id', async(req,res)=>{
     try { 
         const response = await experienceModel.findById(req.params.id)
-        res.send(response)
+        if(user.length){
+          res.send(response)
+        }else{
+          const error = new Error()
+          error.httpStatusCode=404
+          throw error
+        }
     } catch (error) {
        console.log(error) 
     } 

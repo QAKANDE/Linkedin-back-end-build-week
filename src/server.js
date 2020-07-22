@@ -2,6 +2,7 @@ const express = require("express");
 const listEndpoints = require("express-list-endpoints");
 const profileRouter = require('./routes/profiles')
 const experienceRouter = require('./routes/experiences')
+const postRouter = require('./routes/posts')
 const fileRoutes = require('./routes/files')
 const post = require("./routes/posts")
 const { join } = require("path");
@@ -15,10 +16,10 @@ const port = process.env.PORT;
 
 server.use(cors());
 server.use(express.json());
+server.use('/post',postRouter)
 server.use('/profile',profileRouter)
 server.use('/profile/experience' , experienceRouter)
-server.use('/post',post)
-server.use('/file' , fileRoutes)
+//server.use('/file' , fileRoutes)
 console.log(listEndpoints(server))
 
 
