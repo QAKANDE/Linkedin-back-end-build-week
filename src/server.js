@@ -33,7 +33,7 @@ mongoose
   })
   .then(
     server.listen(port, () => {
-      console.log("Running on port", port);
+      console.log("Running on porttttt", port);
     })
   )
   .catch((err) => console.log(err));

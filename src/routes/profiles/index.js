@@ -10,7 +10,6 @@ const {readdir,writeFile} =require('fs-extra');
 router.get("/", async (req, res, next) => {
   try {
     let user = await profileModel.find();
-    
     if(user.length)
     res.send(user);
     else {
