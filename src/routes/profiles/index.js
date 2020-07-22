@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     let user = await profileModel.findById(req.params.id);
-    if(user.length){
+    if(user){
       res.send(user);
     }else{
       const error = new Error()
