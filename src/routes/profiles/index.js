@@ -10,6 +10,7 @@ const {readdir,writeFile} =require('fs-extra');
 router.get("/", async (req, res, next) => {
   try {
     let user = await profileModel.find();
+    
     if(user.length)
     res.send(user);
     else {
@@ -22,11 +23,11 @@ router.get("/", async (req, res, next) => {
     next(error)
   }
 });
-router.get("/:id", async (req, res, next) => {
+router.get("/:username", async (req, res, next) => {
   try {
-    let user = await profileModel.findById(req.params.id);
+    let user = await profileModel.find({username:req.params.username});
     if(user){
-      res.send(user);
+      res.send(user[0]);
     }else{
       const error = new Error()
       error.httpStatusCode=404
@@ -56,7 +57,7 @@ router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
     await writeFile(imgDir,req.file.buffer)
     const editprofile = await profileModel.findByIdAndUpdate(
       req.params.id,
-      {"image": process.env.SERVER_URL + process.env.PORT +'/profile/' + req.params.id + req.file.originalname}
+      {"image": process.env.SERVER_URL + process.env.PORT +'/profileImages/' + req.params.id + req.file.originalname}
     )
     res.status(201).send(editprofile)
   } catch (err) {

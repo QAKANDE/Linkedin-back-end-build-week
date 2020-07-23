@@ -11,7 +11,7 @@ const { userInfo } = require("os");
 router.get("/", async (req, res, next) => {
   try {
     const posts = await postModel.find().populate('user',['name','surname','image']);
-    if(posts.length)
+    if(posts.length>0)
     res.send(posts);
     else {
       const error= new Error()
@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
   try {
     const newPost = new postModel(req.body);
     await newPost.save();
-    res.status(201).send("Created");
+    res.status(201).send(newPost);
   } catch (error) {
     next(error);
   }
@@ -59,7 +59,7 @@ router.post("/image/:id", upload.array("post"), async (req, res, next) => {
         const resolved = await writeFile(
           join(
             __dirname,
-            `../../../public/posts/${req.params.id + e.originalname}`
+            `../../../public/postImages/${req.params.id + e.originalname}`
           ),
           e.buffer
         );
