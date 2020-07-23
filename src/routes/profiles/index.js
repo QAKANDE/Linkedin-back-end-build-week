@@ -39,6 +39,22 @@ router.get("/:username", async (req, res, next) => {
   }
 });
 
+router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
+  
+  try {
+    
+    const imgDir = join(__dirname,`../../../public/profileImages/${req.params.id + req.file.originalname }`)
+    await writeFile(imgDir,req.file.buffer)
+    const editprofile = await profileModel.findOneAndUpdate({username:req.params.id},
+      {"image": process.env.SERVER_URL + process.env.PORT +'/profileImages/' + req.params.id + req.file.originalname}
+    )
+    res.status(201).send(editprofile)
+  } catch (err) {
+    console.log(err)
+    next(err)
+  }
+})
+
 router.post("/", async (req, res, next) => {
   try {
     const newProfile = new profileModel(req.body);
@@ -49,22 +65,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
-  
-  try {
-    
-    const imgDir = join(__dirname,`../../../public/profileImages/${req.params.id + req.file.originalname }`)
-    await writeFile(imgDir,req.file.buffer)
-    const editprofile = await profileModel.findByIdAndUpdate(
-      req.params.id,
-      {"image": process.env.SERVER_URL + process.env.PORT +'/profileImages/' + req.params.id + req.file.originalname}
-    )
-    res.status(201).send(editprofile)
-  } catch (err) {
-    console.log(err)
-    next(err)
-  }
-})
+
 
 router.put("/:id", async (req, res, next) => {
   try {
