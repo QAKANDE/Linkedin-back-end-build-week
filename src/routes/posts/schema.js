@@ -35,7 +35,7 @@ const postSchema = new Schema(
         message: "Username doesn't exist",
       }
     },
-    images: { type: Array, default: "www.www.www" },
+    images: { type: Array, default: "http://localhost:3002/postImages/5f1986afcf82541fa4ce351bglitch.jpg" },
   },
   { timestamps: true }
 );

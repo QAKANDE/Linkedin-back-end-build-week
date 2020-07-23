@@ -29,7 +29,7 @@ router.get("/:id", async (req, res, next) => {
     if(post){
       res.send(post);
     }else{
-      const error = new Error()
+      const error =    Error()
       error.httpStatusCode=404
       throw error
     }
@@ -66,7 +66,7 @@ router.post("/image/:id", upload.array("post"), async (req, res, next) => {
         images.push(
           process.env.SERVER_URL +
             process.env.PORT +
-            "/posts/" +
+            "/postImages/" +
             req.params.id +
             e.originalname
         );
