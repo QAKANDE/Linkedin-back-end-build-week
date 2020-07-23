@@ -27,12 +27,10 @@ router.get("/:username", async (req, res, next) => {
 router.get("/:id", async (req, res) => {
   try {
     const response = await experienceModel.findById(req.params.id);
-    if (user.length) {
+    if (response) {
       res.send(response);
     } else {
-      const error = new Error();
-      error.httpStatusCode = 404;
-      throw error;
+   res.send("Error occurred")
     }
   } catch (error) {
     next(error);
