@@ -11,9 +11,11 @@ const mongoose = require("mongoose");
 const server = express();
 
 
-server.use(express.static(join(__dirname, `../public`)))
+
+const path=join(__dirname,'../public')
 const port = process.env.PORT;
 
+server.use(express.static(path))
 server.use(cors());
 server.use(express.json());
 server.use('/post',postRouter)
@@ -30,7 +32,7 @@ mongoose
   })
   .then(
     server.listen(port, () => {
-      console.log("Running on porttttt", port);
+      console.log("Running on PORT", port);
     })
   )
   .catch((err) => console.log(err));
