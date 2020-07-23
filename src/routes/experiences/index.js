@@ -46,7 +46,7 @@ router.post("/:username", async (req, res) => {
     next(error);
   }
 });
-router.put("/username/:id", async (req, res,next) => {
+router.put("/:username/:id", async (req, res,next) => {
   try {
     const editExperience = await experienceModel.findByIdAndUpdate(
       req.params.id,
