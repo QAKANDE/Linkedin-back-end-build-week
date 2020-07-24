@@ -24,9 +24,12 @@ router.get("/:username", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:username/:id", async (req, res) => {
   try {
-    const response = await experienceModel.findById(req.params.id);
+    const response = await experienceModel.find({
+      username: req.params.username,
+      _id:req.params.id
+    });
     if (response) {
       res.send(response);
     } else {
@@ -80,9 +83,9 @@ router.post("/:username", async (req, res) => {
 });
 
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res,next) => {
   try {
-    req.body.username.delete()
+    delete req.body.username
     const editExperience = await experienceModel.findByIdAndUpdate(
       req.params.id,
       req.body
