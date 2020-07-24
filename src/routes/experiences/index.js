@@ -25,9 +25,12 @@ router.get("/:username", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:username/:id", async (req, res) => {
   try {
-    const response = await experienceModel.findById(req.params.id);
+    const response = await experienceModel.find({
+      username: req.params.username,
+      _id:req.params.id
+    });
     if (response) {
       res.send(response);
     } else {

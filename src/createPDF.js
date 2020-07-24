@@ -46,8 +46,8 @@ const createPDF = (user, experiences) => {
     doc.moveDown();
     
   });
-  doc.image(imagePath, 320, 50, {fit: [100, 100]})
-   .stroke()
+  // doc.image(imagePath, 320, 50, {fit: [100, 100]})
+  //  .stroke()
 
   doc.end();
 

@@ -4,6 +4,7 @@ const profileRouter = require('./routes/profiles')
 const experienceRouter = require('./routes/experiences')
 const postRouter = require('./routes/posts')
 const fileRoutes = require('./routes/files')
+const commentRoutes = require('./routes/Comments')
 const post = require("./routes/posts")
 const { join } = require("path");
 const cors = require("cors");
@@ -25,6 +26,7 @@ server.use(cors());
 server.use(express.json());
 server.use('/post',postRouter)
 server.use('/profile',profileRouter)
+server.use('/profile/post/comment',commentRoutes)
 server.use('/profile/experience' , experienceRouter)
 server.use('/file' , fileRoutes)
 console.log(listEndpoints(server))
