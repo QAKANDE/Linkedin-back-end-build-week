@@ -6,6 +6,7 @@ const upload = multer();
 const { join } = require("path");
 const { readdir, writeFile } = require("fs-extra");
 const experienceModel = require("./schema");
+const cloudinary = require("cloudinary").v2;
 
 router.get("/:username", async (req, res, next) => {
   try {
@@ -30,14 +31,12 @@ router.get("/:id", async (req, res) => {
     if (response) {
       res.send(response);
     } else {
-   res.send("Error occurred")
+      res.send("Error occurred");
     }
   } catch (error) {
     next(error);
   }
 });
-
-
 
 router.post(
   "/image/:id",
@@ -46,18 +45,16 @@ router.post(
     try {
       const imgDir = join(
         __dirname,
-        `../../../public/experienceImages/${req.params.id + req.file.originalname}`
+        `../../../public/experienceImages/${
+          req.params.id + req.file.originalname
+        }`
       );
       await writeFile(imgDir, req.file.buffer);
+      const imageURL = await cloudinary.uploader.upload(imgDir);
       const editExperience = await experienceModel.findByIdAndUpdate(
         req.params.id,
         {
-          image:
-            process.env.SERVER_URL +
-            process.env.PORT +
-            "/experienceImages/" +
-            req.params.id +
-            req.file.originalname,
+          image: imageURL.url,
         }
       );
       res.status(201).send(editExperience);
@@ -79,10 +76,9 @@ router.post("/:username", async (req, res) => {
   }
 });
 
-
 router.put("/:id", async (req, res) => {
   try {
-    req.body.username.delete()
+    delete req.body.username;
     const editExperience = await experienceModel.findByIdAndUpdate(
       req.params.id,
       req.body

@@ -4,7 +4,7 @@ const { join } = require("path");
 const router = express.Router();
 const multer = require("multer");
 const upload = multer();
-
+const cloudinary = require('cloudinary')
 const postModel = require("./schema");
 const { userInfo } = require("os");
 
@@ -48,45 +48,61 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
+  
+  try {
+    const imgDir = join(__dirname,`../../../public/postImages/${req.params.id + req.file.originalname }`)
+    await writeFile(imgDir,req.file.buffer)
+    const imageURL= await cloudinary.uploader.upload(imgDir)
+    console.log(imageURL)
+    const editprofile = await postModel.findOneAndUpdate({_id:req.params.id},
+      {"image": imageURL.url}
+    )
+    res.status(201).send(editprofile)
+  } catch (err) {
+    console.log(err)
+    next(err)
+  }
+})
 
 //ADDS AN ARRAY OF IMAGES FOR POSTS
-router.post("/image/:id", upload.array("post"), async (req, res, next) => {
-  try {
-    console.log(req.files)
-    const images = [];
-    await Promise.all(
-      req.files.map(async (e) => {
-        const resolved = await writeFile(
-          join(
-            __dirname,
-            `../../../public/postImages/${req.params.id + e.originalname}`
-          ),
-          e.buffer
-        );
-        images.push(
-          process.env.SERVER_URL +
-            process.env.PORT +
-            "/postImages/" +
-            req.params.id +
-            e.originalname
-        );
-      })
-    );
-    await Promise.all(
-      images.map(async (e) => {
-        const post = await postModel.update(
-          { _id: req.params.id },
-          { $push: { images: e } }
-        );
-      })
-    );
-    const added = await postModel.findById(req.params.id);
+// router.post("/image/:id", upload.array("post"), async (req, res, next) => {
+//   try {
+//     console.log(req.files)
+//     const images = [];
+//     await Promise.all(
+//       req.files.map(async (e) => {
+//         const resolved = await writeFile(
+//           join(
+//             __dirname,
+//             `../../../public/postImages/${req.params.id + e.originalname}`
+//           ),
+//           e.buffer
+//         );
+//         images.push(
+//           process.env.SERVER_URL +
+//             process.env.PORT +
+//             "/postImages/" +
+//             req.params.id +
+//             e.originalname
+//         );
+//       })
+//     );
+//     await Promise.all(
+//       images.map(async (e) => {
+//         const post = await postModel.update(
+//           { _id: req.params.id },
+//           { $push: { images: e } }
+//         );
+//       })
+//     );
+//     const added = await postModel.findById(req.params.id);
 
-    res.send(added);
-  } catch (err) {
-    next(err);
-  }
-});
+//     res.send(added);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 router.put("/:id", async (req, res, next) => {
   try {
     const editPost = await postModel.findByIdAndUpdate(req.params.id, req.body);

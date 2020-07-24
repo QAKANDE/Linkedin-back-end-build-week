@@ -9,8 +9,13 @@ const { join } = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const server = express();
+const cloudinary = require('cloudinary').v2
 
-
+cloudinary.config({ 
+  cloud_name: process.env.API_CloudName, 
+  api_key: process.env.API_Key, 
+  api_secret: process.env.API_Secret 
+})
 
 const path=join(__dirname,'../public')
 const port = process.env.PORT;

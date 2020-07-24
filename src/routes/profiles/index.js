@@ -5,6 +5,8 @@ const multer = require('multer')
 const upload = multer()
 const {join} = require('path')
 const {readdir,writeFile} =require('fs-extra');
+const cloudinary = require('cloudinary').v2
+
 
 
 router.get("/", async (req, res, next) => {
@@ -43,10 +45,13 @@ router.post("/image/:id",upload.single('profile') ,async(req,res,next)=>{
   
   try {
     
+
     const imgDir = join(__dirname,`../../../public/profileImages/${req.params.id + req.file.originalname }`)
     await writeFile(imgDir,req.file.buffer)
+    const imageURL= await cloudinary.uploader.upload(imgDir)
+    console.log(imageURL)
     const editprofile = await profileModel.findOneAndUpdate({username:req.params.id},
-      {"image": process.env.SERVER_URL + process.env.PORT +'/profileImages/' + req.params.id + req.file.originalname}
+      {"image": imageURL.url}
     )
     res.status(201).send(editprofile)
   } catch (err) {
