@@ -9,7 +9,6 @@ try {
 } catch (error) {
    console.log(error) 
 }
-
 })
 router.get('/:username/:id', async(req,res)=>{
     try { 
