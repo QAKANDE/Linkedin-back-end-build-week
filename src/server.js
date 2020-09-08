@@ -1,14 +1,18 @@
 const express = require("express");
 const listEndpoints = require("express-list-endpoints");
 const profileRouter = require("./routes/profiles");
+const passport = require("passport");
 const postRouter = require("./routes/posts");
 const experienceRouter = require("./routes/experiences");
 const { join } = require("path");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const server = express();
 
 //server.use(express.static(join(__dirname, `../public`)))
+server.use(cookieParser());
+server.use(passport.initialize());
 const port = process.env.PORT;
 server.use(cors());
 server.use(express.json());
